@@ -1,9 +1,59 @@
-<mvc:View controllerName="eaes.invoices.controller.MainView"
-    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
-    xmlns="sap.m">
+<mvc:View 
+    controllerName="eaes.invoices.controller.MainView"
+    xmlns:mvc="sap.ui.core.mvc" 
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
     <Page id="page" title="{i18n>title}">
         <content>
-        <Text id="_IDGenText" text="pruebaTexto"></Text>
+            <Panel id="panel1" headerText="{i18n>selectionScreen}">
+                <Label id="labelShipName" labelFor="shipName" text="{i18n>shipName}" class="sapUiSmallMargin"/>
+                <Input id="shipName" width="200px" value="{selectionScreen>/ShipName}" class="sapUiSmallMarginEnd"/>
+                <Label id="labelCountry" text="{i18n>country}" class="sapUiSmallMargin"/>
+                <Select id="slCountry"
+                        selectedKey="{selectionScreen>/CountryKey}"
+                        forceSelection="false"
+                        items="{selectionScreen>/Countries}">
+                    <items>
+                        <core:Item id="_IDGenItem" key="{selectionScreen>key}" text="{selectionScreen>text}"/>
+                    </items>
+                </Select>
+                <Button id="btnFilters"
+                        text="{i18n>btnFilter}"
+                        icon="sap-icon://filter"
+                        press="onFilter"
+                        class="sapUiSmallMarginEnd"
+                        />
+                <Button id="btnClearFilters"
+                        text="{i18n>btnClearFilter}"
+                        icon="sap-icon://clear-filter"
+                        press="onClearFilter"
+                        class="sapUiSmallMarginEnd"
+                        />
+            </Panel>
+            <Panel id="_IDGenPanel" >
+                <List   id="invoicesList" 
+                        headerText="{i18n>invoiceHeaderList}"
+                        class="sapUiResponsiveMargin"
+                        width="auto"
+                        items="{/Invoices}">
+                    <items>
+                        <ObjectListItem id="_IDGenObjectListItem" 
+                                        title="{ShipName} - {Country}"
+                                        number="{   parts : [ {path: 'ExtendedPrice'},
+                                                            {path: 'selectionScreen>/Currency'}],
+                                                    type : 'sap.ui.model.type.Currency',
+                                                    formatOptions:{
+                                                        showMeasure : false
+                                                }}"
+                                        numberUnit="{selectionScreen>/Currency}"
+                                        numberState="{= ${ExtendedPrice} > 100 ? 'Success' : 'Warning'}">
+                        </ObjectListItem>
+                    </items>
+
+                </List>
+            
+            </Panel>
         </content>
     </Page>
 </mvc:View>
